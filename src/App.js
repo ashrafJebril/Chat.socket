@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Chat from "./Components/Chat" 
 import './App.css';
+import SockJS from "sockjs-client"
+
+
+var sock = new SockJS('https://api.eyeson.team/rt?access_key=5c9a3f9425d9a50010008018/', {headers: {'Access-Control-Allow-Origin':'*'}});
+sock.onopen = function() {
+    console.log('open');
+    sock.send('test');
+};
+
+sock.onmessage = function(e) {
+    console.log('message', e.data);
+    sock.close();
+};
+
+sock.onclose = function() {
+    console.log('close');
+};
+
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+<Chat/>
       </div>
     );
   }
